@@ -71,14 +71,30 @@ function convertToBr(date){
    return dateConvert;
 }
 
-obterUsuario().then((usuario) => {
-  obterTelefone(usuario.id).then((telefone) => {
-    obterEnderecoAsync(usuario.id).then((endereco) => {
-     console.log(`
-        Usuário : ${usuario.nome}, Data Nascimento : ${convertToBr(usuario.dataNascimento)}
-        Telefone : (${telefone.ddd}) ${telefone.numero}
-        Endereco : ${endereco.rua}, ${endereco.bairro}, ${endereco.cidade}
-     `)
-    });
-  });
-});
+// obterUsuario().then((usuario) => {
+//   obterTelefone(usuario.id).then((telefone) => {
+//     obterEnderecoAsync(usuario.id).then((endereco) => {
+//      console.log(`
+//         Usuário : ${usuario.nome}, Data Nascimento : ${convertToBr(usuario.dataNascimento)}
+//         Telefone : (${telefone.ddd}) ${telefone.numero}
+//         Endereco : ${endereco.rua}, ${endereco.bairro}, ${endereco.cidade}
+//      `)
+//     });
+//   });
+// });
+
+async function main() {
+    try{
+      const usuario = await obterUsuario();
+      const telefone = await obterTelefone(usuario.id);
+      const endereco = await obterEnderecoAsync(usuario.id);
+      console.log(`
+      Usuário : ${usuario.nome}, Data Nascimento : ${convertToBr(usuario.dataNascimento)}
+      Telefone : (${telefone.ddd}) ${telefone.numero}
+      Endereco : ${endereco.rua}, ${endereco.bairro}, ${endereco.cidade}
+    `)
+    } catch(error) {
+      console.error("DEU RUIM",error)
+    }
+}
+main();
