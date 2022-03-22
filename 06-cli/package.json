@@ -1,0 +1,9 @@
+{
+  "name": "06-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^9.2.2"
+  }
+}
