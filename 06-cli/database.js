@@ -21,6 +21,10 @@ class Database {
   async cadastrar(heroi) {
       const dados = await this.obterDadosArquivo();
       const id = heroi.id <= 2 ? heroi.id : Date.now();
+
+      if(heroi.nome === undefined || heroi.poder === undefined){
+        throw Error('Quem é o heroí ? quais são seus poderes ?')
+      }
       const heroiComId = {
         id,
         ...heroi
