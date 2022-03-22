@@ -4,11 +4,11 @@
 
 docker run --name postgres -e POSTGRES_USER=kevenm -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=heroes -p 5432:5433 -d postgres
 
-## Lista dockers
+## List dockers with status running
 
 docker ps
 
-## Entra no site do docker
+## Entry in the docker
 
 docker exec -it postgres /bin/bash
 
@@ -24,6 +24,10 @@ docker run --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e 
 
 docker run --name mongoclient -p 3000:3000 --link mongodb:mongodb -d mongoclient/mongoclient
 
-## Criar user for mongdb
+## Create user for mongdb
 
 docker exec -it mongodb mongo --host localhost -u admin -p 123456 -authenticationDatabase admin --eval "db.getSiblingDB('herois').createUser({user : 'keven', pwd: '123456', roles: [{ role : 'readWrite',db: 'herois'}]})"
+
+## This project using Design patterns - Strategy
+
+- [Refactoring Guru](https://refactoring.guru/pt-br/design-patterns/strategy)
