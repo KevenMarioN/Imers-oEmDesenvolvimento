@@ -5,8 +5,9 @@ const driver = new Sequelize(
   '123456',
   {
     host : 'localhost',
+    port : '5433',
     dialect: "postgres",
-    quoteIdentifiers : false
+    quoteIdentifiers : false,
   }
 )
 
@@ -28,11 +29,14 @@ async function main() {
       required : true
     }
   },{
-    tablename : 'TB_HEROIS',
+    table : 'TB_HEROIS',
     freezeTableName : false,
     timestamps : false
   });
-
+  // await Herois.create({
+  //   nome : 'Homem-Formiga',
+  //   poder : 'Ficar do tamanho de uma formiga, Super força'
+  // });
   await Herois.sync();
   const result = await Herois.findAll({ raw : true});
 
