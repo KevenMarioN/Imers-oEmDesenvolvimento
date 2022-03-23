@@ -8,7 +8,7 @@ class Postgres extends ICrud {
     this._herois = null;
     this._connect();
   }
-  async Isconnection() {
+  async IsConnected() {
     try {
       this._driver.authenticate();
       return true;

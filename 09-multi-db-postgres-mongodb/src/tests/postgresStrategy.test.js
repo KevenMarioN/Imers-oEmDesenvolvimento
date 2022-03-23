@@ -11,7 +11,7 @@ describe('Postgres Strategy', function () {
     await context.create(MOCK_HEROI_UPDATE);
   });
   it('PostgresSQL Connection', async function ()  {
-      const result = await context.Isconnection();
+      const result = await context.IsConnected();
       assert.equal(result,true)
   });
   it('Create', async function () {
