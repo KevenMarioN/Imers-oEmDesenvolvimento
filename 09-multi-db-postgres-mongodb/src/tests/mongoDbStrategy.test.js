@@ -14,10 +14,18 @@ const MOCK_HEROI_DEFAULT = {
   poder : 'Baladeira'
 }
 
+const MOCK_HEROI_ACTULIZATION = {
+  nome : `Jose-${Date.now()}`,
+  poder : 'RICO'
+}
+
 describe('MongoDB Suite de testes', function () {
+  let MOCK_HEROI_ID;
   this.beforeAll(async () => {
     await context.connect();
     await context.create(MOCK_HEROI_DEFAULT);
+    const result = await context.create(MOCK_HEROI_ACTULIZATION);
+    MOCK_HEROI_ID = result.id;
   });
   this.afterAll(async () => {
     await context.disconnect();
@@ -30,9 +38,20 @@ describe('MongoDB Suite de testes', function () {
     const {nome , poder } = await context.create(MOCK_HEROI_CREATE);
     assert.deepEqual({nome,poder},MOCK_HEROI_CREATE);
   });
-  it.only('Read', async () => {
+  it('Read', async () => {
     const [{nome,poder}] = await context.read({ nome : MOCK_HEROI_DEFAULT.nome});
     const result = {nome, poder};
     assert.deepEqual(result,MOCK_HEROI_DEFAULT)
+  });
+  it('Actualization', async() => {
+    const nomeUpdate = 'Marcos'
+    const {modifiedCount} = await context.update(MOCK_HEROI_ID,{ nome : nomeUpdate});
+    if(modifiedCount === 1){
+      const [result] = await context.read({ _id : MOCK_HEROI_ID });
+      assert.deepEqual(result.nome,nomeUpdate)
+    }
+    
+    assert.deepEqual(modifiedCount,1);
+    
   });
 });

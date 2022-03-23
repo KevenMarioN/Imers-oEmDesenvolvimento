@@ -18,6 +18,9 @@ class MongoDb extends ICrud {
   async read(item,skip=0,limit=10) {
       return await this._herois.find(item).skip(skip).limit(limit);;
   }
+  async update(id,item){
+    return await this._herois.updateOne({ _id : id},{$set : item})
+  }
   async IsConnected() {
     const state = STATUS[this._connection.readyState]
     if (state === STATUS[1]) {
