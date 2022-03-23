@@ -68,6 +68,9 @@ class Postgres extends ICrud {
     );
     this._defineModel();
   }
+  async disconnect(){
+    this._herois.sequelize.close();
+  }
 }
 
 module.exports = Postgres 

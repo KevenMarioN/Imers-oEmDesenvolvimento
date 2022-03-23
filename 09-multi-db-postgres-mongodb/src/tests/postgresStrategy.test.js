@@ -10,6 +10,9 @@ describe('Postgres Strategy', function () {
     await context.delete();
     await context.create(MOCK_HEROI_UPDATE);
   });
+  this.afterAll(async function () {
+    await context.disconnect();
+  });
   it('PostgresSQL Connection', async function ()  {
       const result = await context.IsConnected();
       assert.equal(result,true)

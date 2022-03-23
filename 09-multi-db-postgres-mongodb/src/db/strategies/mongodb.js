@@ -13,7 +13,10 @@ class MongoDb extends ICrud {
     this._herois = null;
   }
   async create(item) {
-    return await model.create(item);
+    return await this._herois.create(item);
+  }
+  async read(item,skip=0,limit=10) {
+      return await this._herois.find(item).skip(skip).limit(limit);;
   }
   async IsConnected() {
     const state = STATUS[this._connection.readyState]
@@ -38,6 +41,7 @@ class MongoDb extends ICrud {
     this._connection.once('open', () => console.log('Connection with mongoDB this OKAY🆙'));
     this._defineModel();
   }
+  
   _defineModel() {
     const heroiSchema = new Mongoose.Schema({
       nome: {
