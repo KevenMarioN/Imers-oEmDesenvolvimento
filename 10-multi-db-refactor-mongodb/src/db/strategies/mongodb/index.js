@@ -1,4 +1,4 @@
-const ICrud = require('./interfaces/ICrud');
+const ICrud = require('../interfaces/ICrud');
 const Mongoose = require('mongoose');
 const STATUS = {
   0: "Disconectado",
@@ -7,23 +7,23 @@ const STATUS = {
   3: "Disconectando"
 }
 class MongoDb extends ICrud {
-  constructor() {
+  constructor(connection,schema) {
     super();
-    this._connection = null;
-    this._herois = null;
+    this._connection = connection;
+    this._schema = schema;
   }
   async create(item) {
-    return await this._herois.create(item);
+    return await this._schema.create(item);
   }
   async read(item,skip=0,limit=10) {
-      return await this._herois.find(item).skip(skip).limit(limit);;
+      return await this._schema.find(item).skip(skip).limit(limit);;
   }
   async update(id,item){
-    return await this._herois.updateOne({ _id : id},{$set : item})
+    return await this._schema.updateOne({ _id : id},{$set : item})
   }
   async delete(id) {
     const itemID = id ?{ _id : id} : {}
-    return await this._herois.remove(itemID);
+    return await this._schema.remove(itemID);
   }
   async IsConnected() {
     const state = STATUS[this._connection.readyState]
@@ -37,35 +37,18 @@ class MongoDb extends ICrud {
     return STATUS[this._connection.readyState];
   }
 
-  async connect() {
+  static connect() {
     Mongoose.connect('mongodb://keven:123456@localhost:27017/herois', (error) => {
       if (error) {
         console.error('DEU MERDA', error);
         return;
       }
     });
-    this._connection = Mongoose.connection;
-    this._connection.once('open', () => console.log('Connection with mongoDB this OKAY🆙'));
-    this._defineModel();
+    const connection = Mongoose.connection;
+    connection.once('open', () => console.log('Connection with mongoDB this OKAY🆙'));
+    return connection
   }
   
-  _defineModel() {
-    const heroiSchema = new Mongoose.Schema({
-      nome: {
-        type: String,
-        required: true
-      },
-      poder: {
-        type: String,
-        required: true
-      },
-      insertedAt: {
-        type: Date,
-        default: new Date()
-      }
-    });
-    this._herois = Mongoose.model('herois', heroiSchema);
-  }
   async disconnect() {
     this._connection.close();
   }
