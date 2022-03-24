@@ -49,6 +49,7 @@ class Postgres extends ICrud {
         port: '5433',
         dialect: "postgres",
         quoteIdentifiers: false,
+        logging: false
       }
     );
     return connection
