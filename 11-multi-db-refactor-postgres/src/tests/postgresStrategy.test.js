@@ -6,7 +6,7 @@ const HeroiSchema = require('../db/strategies/postgres/schemas/heroiSchema');
 const MOCK_HEROI_CREATE= {nome : 'Gaviao Negro', poder : 'flexas'}
 const MOCK_HEROI_UPDATE = {nome : 'Batman', poder : 'Dinheiro'}
 let context = {};
-describe.only('Postgres Strategy', function () {
+describe('Postgres Strategy', function () {
   this.beforeAll(async function () {
     const connection = await Postgres.connect();
     const model = await Postgres.defineModel(connection,HeroiSchema)

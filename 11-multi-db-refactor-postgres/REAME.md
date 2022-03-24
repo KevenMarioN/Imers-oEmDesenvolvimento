@@ -18,7 +18,7 @@ docker run --name adminer -p 8080:8080 --link postgres:postgres -d adminer
 
 ## MongoDB
 
-docker run --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INIT_ROOT_PASSWORD=123456 -d mongo:4
+docker run --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=123456 -d mongo:4
 
 ## Client for Mongo
 
