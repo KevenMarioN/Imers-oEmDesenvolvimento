@@ -27,9 +27,6 @@ describe('MongoDB Suite de testes', function () {
     const result = await context.create(MOCK_HEROI_ACTULIZATION);
     MOCK_HEROI_ID = result.id;
   });
-  this.afterAll(async () => {
-    await context.disconnect();
-  });
   it('Connection', async () => {
     const result = await context.IsConnected();
     assert.deepEqual(result, 'Conectado')
