@@ -1,11 +1,12 @@
 const Sequelize = require('sequelize');
-const ICrud = require('./../interfaces/ICrud');
+const ICrud = require('../interfaces/ICrud');
 
 class Postgres extends ICrud {
-  constructor(connection,schema) {
+  constructor(connection, schema) {
     super();
     this._connection = connection;
     this._schema = schema;
+    
   }
   async IsConnected() {
     try {
@@ -31,15 +32,15 @@ class Postgres extends ICrud {
     return await this._schema.destroy({ where: query });
 
   }
-  static async defineModel(connection,schema) {
-    const model = connection.define(
-      schema.name,schema.schema,schema.options
+  static async defineModel(connection, schema) {
+    const model = await connection.define(
+      schema.name, schema.schema, schema.options
     );
-    await this._schema.sync();
+    await model.sync();
     return model;
   }
   static async connect() {
-    const connection  = new Sequelize(
+    const connection = new Sequelize(
       'heroes',
       'kevenm',
       '123456',
@@ -50,7 +51,10 @@ class Postgres extends ICrud {
         quoteIdentifiers: false,
       }
     );
-    return connection;
+    return connection
+  }
+  static async disconnect() {
+    await this._schema.sequelize.close();
   }
 }
 

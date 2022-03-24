@@ -2,7 +2,7 @@
 
 ## Docker postgres
 
-docker run --name postgres -e POSTGRES_USER=kevenm -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=heroes -p 5432:5433 -d postgres 
+docker run --name postgres -e POSTGRES_USER=kevenm -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=heroes -p 5433:5432 -d postgres 
 
 ## List dockers with status running
 

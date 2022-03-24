@@ -14,5 +14,4 @@ const heroiSchema = new Mongoose.Schema({
     default: new Date()
   }
 });
-
 module.exports = Mongoose.model('herois', heroiSchema);

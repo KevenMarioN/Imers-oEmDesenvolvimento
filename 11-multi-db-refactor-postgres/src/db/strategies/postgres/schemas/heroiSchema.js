@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
-const HeroisSchema = {
-  name : 'TB_HEROIS',
-  schema : {
+
+const HeroiSchema = {
+  name: 'TB_HEROIS',
+  schema: {
     id: {
       type: Sequelize.INTEGER,
       required: true,
@@ -17,10 +18,10 @@ const HeroisSchema = {
       required: true
     }
   },
-  options : {
+  options: {
     freezeTableName: false,
     timestamps: false
   }
 }
 
-module.exports = HeroisSchema;
+module.exports = HeroiSchema;
