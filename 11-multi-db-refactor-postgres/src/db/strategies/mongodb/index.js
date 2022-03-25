@@ -23,7 +23,7 @@ class MongoDb extends ICrud {
   }
   async delete(id) {
     const itemID = id ?{ _id : id} : {}
-    return await this._schema.remove(itemID);
+    return await this._schema.deleteMany(itemID);
   }
   async IsConnected() {
     const state = STATUS[this._connection.readyState]
