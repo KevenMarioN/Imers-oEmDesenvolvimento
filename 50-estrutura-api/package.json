@@ -8,10 +8,14 @@
     "test:watch": "mocha .\\src\\tests\\*.test.js"
   },
   "dependencies": {
+    "express": "^4.17.3",
+    "express-async-handler": "^1.2.0",
+    "express-validator": "^6.14.0",
     "mocha": "^9.2.2",
     "mongoose": "^6.2.8",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.17.0"
+    "sequelize": "^6.17.0",
+    "supertest": "^6.2.2"
   }
 }

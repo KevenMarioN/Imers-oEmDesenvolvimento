@@ -16,7 +16,7 @@ class MongoDb extends ICrud {
     return await this._schema.create(item);
   }
   async read(item,skip=0,limit=10) {
-      return await this._schema.find(item).skip(skip).limit(limit);;
+      return await this._schema.find(item).skip(parseInt(skip)).limit(parseInt(limit));
   }
   async update(id,item){
     return await this._schema.updateOne({ _id : id},{$set : item})
