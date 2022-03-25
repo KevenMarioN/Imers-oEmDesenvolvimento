@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Context = require('../db/strategies/base/contextStrategy');
 const MongoDb = require('../db/strategies/mongodb');
-const HeroiSchema = require('../db/strategies/mongodb/schemas/heroiSchema');
+const HeroiSchema = require('../db/strategies/mongodb/schemas/heroiShema');
 
 const MOCK_HEROI_CREATE = {
   nome: 'Flash',
