@@ -1,14 +1,14 @@
 const { deepEqual, ok } = require('assert');
 const api = require('../api');
 let app = {};
-describe.only('Teste for API HEROES', function () {
+describe('Teste for API HEROES', function () {
   this.beforeAll(async function () {
     app = await api
   });
   it('Should be able render list', async () => {
     const result = await app.inject({
       method: 'GET',
-      url: '/herois'
+      url: '/herois?skip=0&limit=10'
     });
 
     const { statusCode, payload } = result;

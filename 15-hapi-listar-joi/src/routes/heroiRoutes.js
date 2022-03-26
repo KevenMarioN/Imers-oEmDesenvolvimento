@@ -26,11 +26,11 @@ class HeroRoute extends BaseRoute {
           const { nome, skip, limit } = request.query;
           const query = { 
             nome: { 
-              $regex: `.*${nome || ''}*.`
+              '$regex': `.*${nome}*.`
              } };
-
-          return this.db.read(query, parseInt(skip), parseInt(limit));
+          return this.db.read({query},skip,limit);
         } catch (error) {
+          console.log('DEU MERDA',error)
           return `ERROR`;
         }
       }
