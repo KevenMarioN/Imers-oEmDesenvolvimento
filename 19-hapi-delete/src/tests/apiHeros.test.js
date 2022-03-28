@@ -12,7 +12,7 @@ const MOCK_HERO_STARTED = {
   poder: 'CYBORG'
 }
 let MOCK_ID = '';
-describe.only('Teste for API HEROES', function () {
+describe('Teste for API HEROES', function () {
   this.beforeAll(async function () {
     app = await api
     const { payload } = await app.inject({
@@ -99,8 +99,42 @@ describe.only('Teste for API HEROES', function () {
       payload: expected
     });
     const { statusCode, payload } = result;
-    ok(statusCode === 200);
+    ok(statusCode === 412);
     const data = JSON.parse(payload)
-    deepEqual(data.message, 'Não foi possível atualizar');
+    deepEqual(data.message, 'Não encontrado no banco!');
+  });
+
+  it('Should be able delete hero', async () => {
+    const result = await app.inject({
+      method: 'DELETE',
+      url: `/herois/${MOCK_ID}`
+    });
+    const { statusCode, payload } = result;
+    ok(statusCode === 200);
+    const data = JSON.parse(payload);
+    deepEqual(data.message, "Heroi removido com sucesso!");
+
+  });
+  it('Should be able return error in delete hero', async () => {
+    const result = await app.inject({
+      method: 'DELETE',
+      url: `/herois/6241e9a2ae556da253a663c3`
+    });
+    const { statusCode, payload } = result;
+    ok(statusCode === 412);
+    const data = JSON.parse(payload);
+    deepEqual(data.message, "ID Não encontrado no banco!");
+
+  });
+  it('Should be able return error id invalid', async () => {
+    const result = await app.inject({
+      method: 'DELETE',
+      url: `/herois/INVALID_ID`
+    });
+    const { statusCode, payload } = result;
+    ok(statusCode === 500);
+    const data = JSON.parse(payload);
+    deepEqual(data.message, "An internal server error occurred");
+
   });
 });
