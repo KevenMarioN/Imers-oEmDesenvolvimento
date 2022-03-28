@@ -1,6 +1,7 @@
 const { deepEqual, ok, notStrictEqual } = require('assert');
 const api = require('../api');
 let app = {};
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IktldmVuIiwiaWQiOjEsImlhdCI6MTY0ODQ5ODcxOH0.o7VoVA1PwoiNmmbB2I5grAJ3D-6Hv0hIlkTzqBF0tws";
 const MOCK_HERO_CREATE = {
   nome: `Luffy-${Date.now()}`,
   poder: 'Nika Nika no mi'
@@ -9,6 +10,9 @@ const MOCK_HERO_STARTED = {
   nome: `Franklin-${Date.now()}`,
   poder: 'CYBORG'
 }
+const headers = {
+  Authorization : TOKEN
+}
 let MOCK_ID = '';
 describe('Teste for API HEROES', function () {
   this.beforeAll(async function () {
@@ -16,6 +20,7 @@ describe('Teste for API HEROES', function () {
     const { payload } = await app.inject({
       url: '/herois',
       method: 'POST',
+      headers,
       payload: MOCK_HERO_STARTED
     });
     const { _id } = JSON.parse(payload);
@@ -24,6 +29,7 @@ describe('Teste for API HEROES', function () {
   it('Should be able render list', async () => {
     const result = await app.inject({
       method: 'GET',
+      headers,
       url: '/herois?skip=0&limit=10'
     });
 
@@ -36,6 +42,7 @@ describe('Teste for API HEROES', function () {
     const LIMIT_ITEM = 3;
     const result = await app.inject({
       method: 'GET',
+      headers,
       url: `/herois?skip=0&limit=${LIMIT_ITEM}`
     });
 
@@ -48,6 +55,7 @@ describe('Teste for API HEROES', function () {
     const LIMIT_ITEM = "kajdkshadj";
     const result = await app.inject({
       method: 'GET',
+      headers,
       url: `/herois?skip=0&limit=${LIMIT_ITEM}`
     });
     deepEqual(result.statusCode, 400);
@@ -56,6 +64,7 @@ describe('Teste for API HEROES', function () {
     const NAME = MOCK_HERO_STARTED.nome;
     const resultSearch = await app.inject({
       method: 'GET',
+      headers,
       url: `/herois?nome=${NAME}`
     });
     
@@ -68,6 +77,7 @@ describe('Teste for API HEROES', function () {
     const { statusCode, payload } = await app.inject({
       method: 'POST',
       url: '/herois',
+      headers,
       payload: MOCK_HERO_CREATE
     });
     const { message, _id } = JSON.parse(payload);
@@ -79,7 +89,8 @@ describe('Teste for API HEROES', function () {
   it('Should be able return erro in method POST, if not exists nome or poder', async () => {
     const { statusCode } = await app.inject({
       method: 'POST',
-      url: '/herois'
+      url: '/herois',
+      headers
     });
     deepEqual(statusCode, 400);
   });
@@ -91,6 +102,7 @@ describe('Teste for API HEROES', function () {
     const result = await app.inject({
       method: 'PATCH',
       url: `/herois/${_id}`,
+      headers,
       payload: expected
     });
     const { statusCode, payload } = result;
@@ -106,6 +118,7 @@ describe('Teste for API HEROES', function () {
     const result = await app.inject({
       method: 'PATCH',
       url: `/herois/${_id}`,
+      headers,
       payload: expected
     });
     const { statusCode, payload } = result;
@@ -116,6 +129,7 @@ describe('Teste for API HEROES', function () {
   it('Should be able delete hero', async () => {
     const result = await app.inject({
       method: 'DELETE',
+      headers,
       url: `/herois/${MOCK_ID}`
     });
     const { statusCode, payload } = result;
@@ -127,6 +141,7 @@ describe('Teste for API HEROES', function () {
   it('Should be able return error in delete hero', async () => {
     const result = await app.inject({
       method: 'DELETE',
+      headers,
       url: `/herois/6241e9a2ae556da253a663c3`
     });
     const { statusCode, payload } = result;
@@ -138,6 +153,7 @@ describe('Teste for API HEROES', function () {
   it('Should be able return error id invalid', async () => {
     const result = await app.inject({
       method: 'DELETE',
+      headers,
       url: `/herois/INVALID_ID`
     });
     const { statusCode, payload } = result;
