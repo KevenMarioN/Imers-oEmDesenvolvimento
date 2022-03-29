@@ -1,3 +1,16 @@
+const { config } = require('dotenv');
+const { join } = require('path');
+const { ok } = require('assert');
+
+const env = process.env.NODE_ENV || "dev";
+ok(env === "prod" || env === "dev","ENV Invalid!");
+
+const configPath = join(__dirname, './config',`.env.${env}`);
+
+config({
+  path : configPath
+});
+
 const Hapi = require('@hapi/hapi');
 const HapiSwagger = require('hapi-swagger');
 const Vision = require('@hapi/vision');
@@ -12,10 +25,10 @@ const AuthRoutes = require('./routes/authRoutes');
 const Postgres = require('./db/strategies/postgres');
 const UserSchema = require('./db/strategies/postgres/schemas/userSchema');
 
-const JWT_SECRET = "MEU_SEGREDO"
+const JWT_SECRET = process.env.JWT_KEY;
 
 const app = new Hapi.Server({
-  port: 5000
+  port: process.env.PORT
 });
 
 function mapRoutes(instance, methods) {
@@ -24,15 +37,16 @@ function mapRoutes(instance, methods) {
 async function main() {
   const connection = Mongodb.connect();
   const context = new ContextStrategy(new Mongodb(connection, HeroiSchema));
-  
+
   const connectionPostgres = await Postgres.connect();
-  const model = await Postgres.defineModel(connectionPostgres,UserSchema);
-  const contextPostgres = new ContextStrategy(new Postgres(connectionPostgres,model));
+  const model = await Postgres.defineModel(connectionPostgres, UserSchema);
+  const contextPostgres = new ContextStrategy(new Postgres(connectionPostgres, model));
   const swaggerOptions = {
     info: {
       title: 'API HEROS - #CursoNodeBR',
       version: 'v1.0',
-    }}
+    }
+  }
   await app.register([
     Inert,
     Vision,
@@ -42,29 +56,29 @@ async function main() {
       options: swaggerOptions
     }
   ]);
-  app.auth.strategy('jwt','jwt',{
-    key : JWT_SECRET,
+  app.auth.strategy('jwt', 'jwt', {
+    key: JWT_SECRET,
     // options : {
     //   expiresIn : 20
     // }
-    validate : async (data,request) => {
+    validate: async (data, request) => {
       const [result] = await contextPostgres.read({
-        username : data.username.toLowerCase()
+        username: data.username.toLowerCase()
       })
-      if(!result){
+      if (!result) {
         return {
-          isValid : false
+          isValid: false
         }
       }
       return {
-        isValid : true
+        isValid: true
       }
     }
   });
   app.auth.default('jwt');
   app.route([
     ...mapRoutes(new HeroRoute(context), HeroRoute.methods()),
-    ...mapRoutes(new AuthRoutes(JWT_SECRET,contextPostgres),AuthRoutes.methods())
+    ...mapRoutes(new AuthRoutes(JWT_SECRET, contextPostgres), AuthRoutes.methods())
   ]);
   await app.start()
   console.log('SERVE RUNNING IN PORT:', app.info.port);

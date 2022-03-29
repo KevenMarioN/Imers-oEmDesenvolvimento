@@ -38,7 +38,7 @@ class MongoDb extends ICrud {
   }
 
   static connect() {
-    Mongoose.connect('mongodb://keven:123456@localhost:27017/herois', (error) => {
+    Mongoose.connect(process.env.MONGODB_URL, (error) => {
       if (error) {
         console.error('DEU MERDA', error);
         return;
