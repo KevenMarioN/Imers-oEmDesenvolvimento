@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "cross-env NODE_ENV=dev mocha .\\src\\tests\\*.test.js",
+    "test:prod" : "cross-env NODE_ENV=prod mocha .\\src\\tests\\*.test.js",
     "test:watch": "cross-env NODE_ENV=dev mocha .\\src\\tests\\*.test.js",
     "start": "cross-env NODE_ENV=dev node src/api.js"
   },
